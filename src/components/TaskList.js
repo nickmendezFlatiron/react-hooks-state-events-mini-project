@@ -1,21 +1,28 @@
-import React from "react";
+import {React , useState} from "react";
 import Task from "./Task";
 import { v4 as uuid } from 'uuid';
 
 function TaskList({tasks, taskCategory}) {
 
- 
+  const [removedTask , setRemovedTask] = useState(tasks)
 
-  let filteredTasks = tasks.filter(task => {
+  
+  function handleRemovedTask(task) {
+    const deleteTask = removedTask.filter(arrayTask => arrayTask.text !== task.text)
+    setRemovedTask(deleteTask)
+  }
+  
+
+  const filteredTasks = removedTask.filter(task => {
     if (taskCategory === "All") {
       return true 
     } return task.category === taskCategory
   })
 
-
-  let listOfTasks = filteredTasks.map(task => { 
+ 
+  const listOfTasks = filteredTasks.map(task => { 
     const {text , category}  = task ;
-    return ( <Task text={text} category={category} key={uuid()} /> )
+    return ( <Task text={text} category={category} key={uuid()} handleRemovedTask={() =>handleRemovedTask(task)} /> )
   })
 
   
